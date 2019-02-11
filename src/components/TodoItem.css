@@ -1,0 +1,12 @@
+.TodoItem-Completed {
+    text-decoration: line-through;
+    opacity: .3;
+}
+
+.TodoItem {
+    display: flex;
+}
+
+.text {
+    margin-left: 5px;
+}
