@@ -10,8 +10,9 @@ class TodoItem extends Component {
         let className = 'text';
         if(item.isCompleted) className += ' TodoItem-Completed';
         let img = item.isCompleted ? check : checkEmpty;
+        let display = !item.display && 'none';
         return (
-            <div className="TodoItem" >
+            <div className="TodoItem" style={{display: display}}>
                 <img src={img} alt="empty" width="24" onClick={this.props.onclick}/>
                 <p className={className}>{ item.title }</p>
             </div>
@@ -19,4 +20,4 @@ class TodoItem extends Component {
     }
 }
 
-export default TodoItem
+export default TodoItem;

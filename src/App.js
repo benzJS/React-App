@@ -9,12 +9,11 @@ class App extends Component {
     super();
     this.state = {
       todoList: [
-        { title: 'Learning', isCompleted: false},
-        { title: 'Workout', isCompleted: false},
-        { title: 'Cooking rice', isCompleted: false}
+        { title: 'Learning', isCompleted: false, display: true},
+        { title: 'Workout', isCompleted: false, display: true},
+        { title: 'Cooking rice', isCompleted: false, display: true}
       ]
     };
-    this.something = 'true';
   }
   onItemClicked(item) {
     return (ev) => {
@@ -41,13 +40,33 @@ class App extends Component {
     return (ev) => {
       if(ev.keyCode === 13 && ev.target.value !== ''){
         this.setState({
-          todoList: [...this.state.todoList, { title: ev.target.value, isCompleted: false }]
+          todoList: [{ title: ev.target.value, isCompleted: false, display: true }, ...this.state.todoList ]
         })
+        ev.target.value = '';
       }
+    }
+  }
+  filter() {
+    return () => {
+      let todoList = this.state.todoList.map(item => {
+        if(item.isCompleted) item.display = !item.display;
+        return item;
+      })
+      this.setState({
+        todoList: todoList
+      })
+    }
+  }
+  clearCompleted() {
+    return () => {
+      this.setState({
+        todoList: this.state.todoList.filter(item => item.isCompleted === false)
+      })
     }
   }
   render() {
     let img = this.state.todoList.every(item => item.isCompleted === true) ? checked : checkCircleEmpty;
+    let img2 = this.state.todoList.some(item => item.display === false) ? checked : checkCircleEmpty;
     return (
       <div className="App">
         <div>
@@ -57,6 +76,12 @@ class App extends Component {
         {
           this.state.todoList.map((item, index) => <TodoItem item={item} key={index} onclick={this.onItemClicked(item)} />)
         }
+        <div>
+          <p>All - {this.state.todoList.length}</p>
+          <p>Completed - {this.state.todoList.filter(item => item.isCompleted === true).length}</p>
+          <img src={img2} width="24" alt="" onClick={this.filter()} />Lọc
+          <button onClick={this.clearCompleted()}>Clear Completed</button>
+        </div>
       </div>
     );
   }
